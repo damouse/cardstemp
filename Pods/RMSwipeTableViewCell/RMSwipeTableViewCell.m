@@ -13,6 +13,7 @@
 @end
 
 @implementation RMSwipeTableViewCell
+@synthesize panner;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -36,9 +37,9 @@
 {
     // We need to set the contentView's background colour, otherwise the sides are clear on the swipe and animations
     [self.contentView setBackgroundColor:[UIColor whiteColor]];
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    [panGestureRecognizer setDelegate:self];
-    [self addGestureRecognizer:panGestureRecognizer];
+    panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [panner setDelegate:self];
+    [self addGestureRecognizer:panner];
     
     self.revealDirection = RMSwipeTableViewCellRevealDirectionBoth;
     self.animationType = RMSwipeTableViewCellAnimationTypeBounce;
@@ -48,6 +49,7 @@
     self.panElasticity = YES;
     self.panElasticityFactor = 0.55f;
     self.panElasticityStartingPoint = 0.0f;
+    self.interruptPanGestureHandler = NO;
     
     UIView *backgroundView = [[UIView alloc] initWithFrame:self.frame];
     backgroundView.backgroundColor = [UIColor whiteColor];
@@ -67,6 +69,13 @@
 #pragma mark - Gesture recognizer delegate
 
 -(BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
+//    NSLog(@"Should being...");
+    if (self.interruptPanGestureHandler) {
+//        NSLog(@"Kill triggered");
+        panGestureRecognizer.enabled = false;
+        return NO;
+    }
+    
     // We only want to deal with the gesture of it's a pan gesture
     if ([panGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && self.revealDirection != RMSwipeTableViewCellRevealDirectionNone) {
         CGPoint translation = [panGestureRecognizer translationInView:[self superview]];
@@ -77,10 +86,18 @@
 }
 
 -(void)handlePanGesture:(UIPanGestureRecognizer *)panGestureRecognizer {
+    if (self.interruptPanGestureHandler) {
+//        NSLog(@"Kill triggered");
+        panGestureRecognizer.enabled = false;
+        return;
+    }
+    
     CGPoint translation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
     CGPoint velocity = [panGestureRecognizer velocityInView:panGestureRecognizer.view];
     CGFloat panOffset = translation.x;
+    
     if (self.panElasticity) {
+        
         if (ABS(translation.x) > self.panElasticityStartingPoint) {
             CGFloat width = CGRectGetWidth(self.frame);
             CGFloat offset = abs(translation.x);
@@ -91,14 +108,18 @@
             }
         }
     }
+    
     CGPoint actualTranslation = CGPointMake(panOffset, translation.y);
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan && [panGestureRecognizer numberOfTouches] > 0) {
+        
+        
         [self didStartSwiping];
         [self animateContentViewForPoint:actualTranslation velocity:velocity];
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged && [panGestureRecognizer numberOfTouches] > 0) {
         [self animateContentViewForPoint:actualTranslation velocity:velocity];
 	} else {
 		[self resetCellFromPoint:actualTranslation  velocity:velocity];
+        self.interruptPanGestureHandler = NO;
 	}
 }
 
