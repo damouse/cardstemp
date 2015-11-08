@@ -60,14 +60,7 @@ class LandingViewController: UIViewController, RiffleDelegate {
             controller.me = self.me
             controller.room = RiffleAgent(name: roomName, superdomain: self.app)
             
-            // Present the controller with a transparent effect
-            let effect = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-            effect.frame = controller.view.frame
-            controller.view.insertSubview(effect, atIndex:0)
-            controller.modalPresentationStyle = .OverFullScreen
-            self.modalPresentationStyle = .CurrentContext
-            
-            self.presentViewController(controller, animated: true, completion: nil)
+            presentControllerTranslucent(self, target: controller)
         })
     }
     

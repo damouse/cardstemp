@@ -65,15 +65,11 @@ class CardTableDelegate: NSObject, UITableViewDelegate, UITableViewDataSource, R
         let index = table.indexPathForCell(cell)
         let card = cards[index!.row]
         
-        // right side selection
-        if point.x >= MAX || point.x <= (-1 * MAX) {
-            // reset the cell
+        if point.x >= CGFloat(70.0) || point.x <= (-1 * CGFloat(70.0)) {
             cell.resetContentView()
             cell.interruptPanGestureHandler = true
             parent.playerSwiped(card)
         }
-        
-        // Left side selection. Defer for now, although this should represent a "rejection" when choosing
     }
     
     //MARK: Utility
@@ -215,4 +211,14 @@ func flashCell(target: Player, model: [Player], collection: UICollectionView) {
     }
 }
 
+func presentControllerTranslucent(source: UIViewController, target: UIViewController) {
+    // Presents the target view contoller translucently
+    let effect = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    effect.frame = target.view.frame
+    target.view.insertSubview(effect, atIndex:0)
+    target.modalPresentationStyle = .OverFullScreen
+    source.modalPresentationStyle = .CurrentContext
+    
+    source.presentViewController(target, animated: true, completion: nil)
+}
 

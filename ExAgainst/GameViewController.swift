@@ -21,9 +21,6 @@ import Riffle
 import RMSwipeTableViewCell
 import M13ProgressSuite
 
-// Testing ui code
-let MAX = CGFloat(70.0)
-
 
 class GameViewController: UIViewController {
     
