@@ -15,6 +15,7 @@ public class RiffleAgent: NSObject, RiffleDelegate {
     
     var connection: RiffleConnection
     var superdomain: RiffleAgent?
+        // both will be connected
     
     var registrations: [String] = []
     var subscriptions: [String] = []
@@ -35,8 +36,7 @@ public class RiffleAgent: NSObject, RiffleDelegate {
     
     public init(name n: String, superdomain s: RiffleAgent) {
         // Initialize this agent as a subdomain of the given domain. Does not
-        // connect. If "connect" is called on either the superdomain or this domain
-        // both will be connected
+        // connect. If "connect" is called on either the superdomain or this domai
         
         superdomain = s
         domain = s.domain + "." + n

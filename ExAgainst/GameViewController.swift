@@ -33,33 +33,26 @@ class GameViewController: UIViewController {
     @IBOutlet weak var collectionPlayers: UICollectionView!
     @IBOutlet weak var buttonBack: UIButton!
     
-    var session: RiffleAgent?
-    var state: String = "Empty"
-    var players: [Player] = []
-    var currentPlayer = Player()
-    
     var app: RiffleAgent!
     var room: RiffleAgent!
     var me: RiffleAgent!
+    var currentPlayer = Player()
     
     
     // Migrations from the old delegate code
     var cards: [Card] = []
     
     
-    override func viewDidLoad() {
-        tableDelegate = CardTableDelegate(tableview: tableCard, parent: self)
-        collectionDelegate = PlayerCollectionDelegate(collectionview: collectionPlayers, parent: self)
-        
+    override func viewWillAppear(animated: Bool) {
+        // These used to be in viewDidload
         buttonBack.imageView?.contentMode = .ScaleAspectFit
-        collectionDelegate!.playersChanged(players)
+        //reloadPlayers(players)
         
-        if state == "Picking" {
-            tableDelegate!.setTableCards(currentPlayer.hand)
+        if currentPlayer.state == "Picking" {
+            reloadCards(cards)
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+        
+        // These used to be in viewDidAppear
         room.subscribe("round/picking", picking)
         room.subscribe("round/choosing", choosing)
         room.subscribe("round/scoring", scoring)
@@ -75,9 +68,9 @@ class GameViewController: UIViewController {
         currentPlayer.hand = []
         
         room.call("leave", currentPlayer, handler: nil)
-        session!.unregister(session!.domain + "/draw")
-        room.leave()
         me.unregister("draw")
+        room.leave()
+
     }
     
     @IBAction func leave(sender: AnyObject) {
@@ -88,14 +81,13 @@ class GameViewController: UIViewController {
         state = "Picking"
         labelActiveCard.text = card.text
         _ = players.map { $0.chooser = $0 == player }
-        tableDelegate!.setTableCards(player.domain == session!.domain ? [] : currentPlayer.hand)
+        reloadCards(player.domain == session!.domain ? [] : currentPlayer.hand)
         viewProgress.countdown(time)
     }
     
     func choosing(choices: [Card], time: Double) {
         state = "Choosing"
-        tableDelegate?.setTableCards(choices)
-        tableCard.reloadData()
+        reloadCards(choices)
         viewProgress.countdown(time)
     }
     
@@ -125,20 +117,17 @@ class GameViewController: UIViewController {
         currentPlayer.hand += cards
     }
     
-    func playerSwiped(card: Card) {
-        if state == "Picking" && !currentPlayer.chooser {
-            room.call("play/pick", currentPlayer, card, handler: nil)
-            tableDelegate!.removeCellsExcept([card])
-        } else if state == "Choosing" && currentPlayer.chooser {
-            room.publish("play/choose", card)
-            tableDelegate!.removeCellsExcept([card])
-        } else {
-            print("Pick occured outside a valid round! OurChoice: \(currentPlayer.chooser), state: \(state)")
-        }
-    }
     
     //MARK: Interface for interacting with collection objects
-    func set 
+    func reloadCards(newCards: [Card]) {
+        cards = newCards
+        tableCard.reloadData()
+    }
+    
+    func reloadPlayers(newPlayers: [Player]) {
+        players = newPlayers
+        collectionPlayers.reloadData()
+    }
     
     
     // MARK: UITableView Delegate and Data Source
@@ -169,7 +158,7 @@ class GameViewController: UIViewController {
     func swipeTableViewCell(swipeTableViewCell: RMSwipeTableViewCell!, didSwipeToPoint point: CGPoint, velocity: CGPoint) {
         let cell = swipeTableViewCell as! CardCell
         
-        let index = table.indexPathForCell(cell)
+        let index = tableCard.indexPathForCell(cell)
         let card = cards[index!.row]
         
         // right side selection
@@ -177,7 +166,17 @@ class GameViewController: UIViewController {
             // reset the cell
             cell.resetContentView()
             cell.interruptPanGestureHandler = true
-            parent.playerSwiped(card)
+
+            // Move to the player class?
+            if state == "Picking" && !currentPlayer.chooser {
+                room.call("play/pick", currentPlayer, card, handler: nil)
+                removeCellsExcept([card])
+            } else if state == "Choosing" && currentPlayer.chooser {
+                room.publish("play/choose", card)
+                removeCellsExcept([card])
+            } else {
+                print("Pick occured outside a valid round! OurChoice: \(currentPlayer.chooser), state: \(state)")
+            }
         }
         
         // Left side selection. Defer for now, although this should represent a "rejection" when choosing

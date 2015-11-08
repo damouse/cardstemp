@@ -10,21 +10,29 @@
 import Foundation
 import Riffle
 
+
+// Player class. Holds data and game state
 class Player: RiffleModel {
-    var id = -1
+    var state: String = "Empty"
+    var players: [Player] = []
     
-    var domain = ""
     var score = 0
-    
     var chooser = false
     var hand: [Card] = []
     var pick: Card?
     
+    
     override class func ignoreProperties() -> [String] {
-        return ["hand", "pick"]
+        //These properties will not be transferred when the object is transferred
+        return ["hand", "pick", "players"]
     }
+    
+    
+    // MARK: Game Functionality 
+    
 }
 
+//MARK: Card Class
 class Card: RiffleModel {
     var id = -1
     var text = ""
@@ -35,10 +43,10 @@ func ==(lhs: Card, rhs: Card) -> Bool {
 }
 
 func ==(lhs: Player, rhs: Player) -> Bool {
-    return lhs.domain == rhs.domain
+    return lhs.agent == rhs.agent
 }
 
 func getPlayer(players: [Player], domain: String) -> Player {
-    return players.filter({$0.domain == domain})[0]
+    return players.filter({$0.agent.domain == domain})[0]
 }
 
