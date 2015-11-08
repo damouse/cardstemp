@@ -125,6 +125,7 @@
 				50CAC83B1BEE9FBB005E605F /* LandingViewController.swift */,
 				50CAC83C1BEE9FBB005E605F /* GameViewController.swift */,
 				50CAC83D1BEE9FBB005E605F /* Views.swift */,
+				50CAC8201BEE9763005E605F /* Main.storyboard */,
 			);
 			path = ExAgainst;
 			sourceTree = "<group>";
@@ -142,7 +143,6 @@
 		50CAC8421BEE9FC9005E605F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				50CAC8201BEE9763005E605F /* Main.storyboard */,
 				50CAC8251BEE9763005E605F /* LaunchScreen.storyboard */,
 				50CAC8431BEE9FEE005E605F /* LiberationSans-Bold.ttf */,
 				50CAC84C1BEEA0B2005E605F /* Bridging-Header.h */,
@@ -402,7 +402,6 @@
 				50CAC8211BEE9763005E605F /* Base */,
 			);
 			name = Main.storyboard;
-			path = ExAgainst;
 			sourceTree = "<group>";
 		};
 		50CAC8251BEE9763005E605F /* LaunchScreen.storyboard */ = {
