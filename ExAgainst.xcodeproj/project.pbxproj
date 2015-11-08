@@ -105,9 +105,6 @@
 				50CAC81B1BEE9763005E605F /* ExAgainst */,
 				50CAC8331BEE97A1005E605F /* Backend */,
 				50CAC8421BEE9FC9005E605F /* Resources */,
-				50CAC81A1BEE9763005E605F /* Products */,
-				A63F0B9CC058B0CF5F8ADE23 /* Pods */,
-				8DEBC40E6F1AA31423351A0C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +155,9 @@
 				50CAC8501BEEA233005E605F /* q21.json */,
 				50CAC8281BEE9763005E605F /* Info.plist */,
 				50CAC8231BEE9763005E605F /* Assets.xcassets */,
+				50CAC81A1BEE9763005E605F /* Products */,
+				A63F0B9CC058B0CF5F8ADE23 /* Pods */,
+				8DEBC40E6F1AA31423351A0C /* Frameworks */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

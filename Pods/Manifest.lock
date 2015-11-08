@@ -24,29 +24,29 @@ PODS:
   - GHODictionary (1.0.9)
   - IHKeyboardAvoiding (2.5)
   - M13ProgressSuite (1.2.7)
-  - Mantle (1.5):
-    - Mantle/extobjc (= 1.5)
-  - Mantle/extobjc (1.5)
+  - Mantle (2.0.5):
+    - Mantle/extobjc (= 2.0.5)
+  - Mantle/extobjc (2.0.5)
   - MPMessagePack (1.3.2):
     - GHODictionary
-  - Riffle (0.1.43):
+  - Riffle (0.1.47):
     - AFNetworking (= 2.6.1)
     - CocoaAsyncSocket (= 7.4.1)
-    - Mantle (= 1.5)
+    - Mantle (= 2.0.5)
     - MPMessagePack (= 1.3.2)
-    - Riffle/ios (= 0.1.43)
-    - Riffle/osx (= 0.1.43)
+    - Riffle/ios (= 0.1.47)
+    - Riffle/osx (= 0.1.47)
     - SocketRocket (= 0.4.1)
-  - Riffle/ios (0.1.43):
+  - Riffle/ios (0.1.47):
     - AFNetworking (= 2.6.1)
     - CocoaAsyncSocket (= 7.4.1)
-    - Mantle (= 1.5)
+    - Mantle (= 2.0.5)
     - MPMessagePack (= 1.3.2)
     - SocketRocket (= 0.4.1)
-  - Riffle/osx (0.1.43):
+  - Riffle/osx (0.1.47):
     - AFNetworking (= 2.6.1)
     - CocoaAsyncSocket (= 7.4.1)
-    - Mantle (= 1.5)
+    - Mantle (= 2.0.5)
     - MPMessagePack (= 1.3.2)
     - SocketRocket (= 0.4.1)
   - RMSwipeTableViewCell (0.6)
@@ -76,9 +76,9 @@ SPEC CHECKSUMS:
   GHODictionary: 1f7873492445e0f33ac19575a358c3c91926b564
   IHKeyboardAvoiding: 8f14fed93405dd2c44ce070a26f780d9e477538c
   M13ProgressSuite: 03d194af6359da440641ba758aed5a18b0386a86
-  Mantle: 3bf6db311c8b4a19b6be01f2483fa4590aa166f3
+  Mantle: 1912395033f601de5adc8ee91e48f46e4c7051ad
   MPMessagePack: 23bbb933ef1046edcf104e3556ab4a6b4b0a69d4
-  Riffle: 0105982395b479d83039ef59a50d4355c1693c61
+  Riffle: 9b941f428778b08bace1a992c341d735068594cd
   RMSwipeTableViewCell: ef3a5fc804cf0d5fb70fe1195c088cc40b3fde3c
   SocketRocket: ee0b5c34182d37bb4f1f8d628bbe737718126daa
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7

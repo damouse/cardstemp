@@ -2,19 +2,15 @@
 //  Room.swift
 //  FabAgainstBackend
 //
-//  Created by Mickey Barboi on 9/29/15.
-//  Copyright © 2015 paradrop. All rights reserved.
+//  Created by damouse on 9/29/15.
+//  Copyright © 2015 exis. All rights reserved.
 //
-
 
 import Foundation
 import Riffle
 
 class Room: NSObject {
-    var app: RiffleAgent
-    var me: RfifleAgent
-    
-    var name = ID + "/room" + randomStringWithLength(6)
+    var me: RiffleAgent
     
     var state: String = "Empty"
     var deck: Deck
@@ -23,17 +19,16 @@ class Room: NSObject {
     var timer: NSTimer?
     
     
-    init(app s: Container, deck d: Deck) {
-        app = s
+    init(deck d: Deck) {
         me = RiffleAgent(name: randomStringWithLength(6), superdomain: app)
         
         deck = d
         
         super.init()
         
-        room.register("leave", playerLeft)
-        room.register("play/pick", playerLeft)
-        room.subscribe("play/choose", choose)
+        me.register("leave", playerLeft)
+        me.register("play/pick", playerLeft)
+        me.subscribe("play/choose", choose)
         
         // Move to container
         //session.subscribe(ID + "/sessionLeft", sessionLeft)
@@ -65,7 +60,7 @@ class Room: NSObject {
             }
         }
         
-        return [deck.drawCards(deck.answers, number: HAND_SIZE), players, String(state), name]
+        return [deck.drawCards(deck.answers, number: HAND_SIZE), players, state, me.name!]
     }
     
     func playerLeft(player: Player) {
