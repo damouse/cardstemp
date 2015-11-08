@@ -36,7 +36,6 @@ class GameViewController: UIViewController {
     var tableDelegate: CardTableDelegate?
     var collectionDelegate: PlayerCollectionDelegate?
     
-    var session: RiffleAgent?
     var state: String = "Empty"
     var players: [Player] = []
     var currentPlayer = Player()
@@ -74,7 +73,6 @@ class GameViewController: UIViewController {
         currentPlayer.hand = []
         
         room.call("leave", currentPlayer, handler: nil)
-        session!.unregister(session!.domain + "/draw")
         room.leave()
         me.unregister("draw")
     }
@@ -87,7 +85,7 @@ class GameViewController: UIViewController {
         state = "Picking"
         labelActiveCard.text = card.text
         _ = players.map { $0.chooser = $0 == player }
-        tableDelegate!.setTableCards(player.domain == session!.domain ? [] : currentPlayer.hand)
+        tableDelegate!.setTableCards(player.domain == me.domain ? [] : currentPlayer.hand)
         viewProgress.countdown(time)
     }
     

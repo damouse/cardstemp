@@ -25,6 +25,7 @@ class Player: RiffleModel {
     }
 }
 
+
 class Card: RiffleModel {
     var id = -1
     var text = ""
@@ -41,6 +42,7 @@ func ==(lhs: Player, rhs: Player) -> Bool {
 func getPlayer(players: [Player], domain: String) -> Player {
     return players.filter({$0.domain == domain})[0]
 }
+
 
 // Utility function to generate random strings
 func randomStringWithLength (len : Int) -> String {
