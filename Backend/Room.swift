@@ -11,17 +11,15 @@ import Riffle
 
 class Room: NSObject {
     var me: RiffleAgent
+    var timer: NSTimer?
     
     var state: String = "Empty"
     var deck: Deck
     var players: [Player] = []
     
-    var timer: NSTimer?
-    
     
     init(deck d: Deck) {
         me = RiffleAgent(name: randomStringWithLength(6), superdomain: app)
-        
         deck = d
         
         super.init()
@@ -44,7 +42,6 @@ class Room: NSObject {
         // Called from main session when player assigned to the room
         // Returns the information the player needs to get up to date
         
-        // TODO: Assumes no duplicates, obviously
         let player = Player()
         player.id = Int(arc4random_uniform(UInt32.max))
         player.domain = domain
