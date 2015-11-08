@@ -22,14 +22,15 @@ class LandingViewController: UIViewController, RiffleDelegate {
     
     var app: RiffleAgent!
     var me: RiffleAgent!
+    var container: RiffleAgent!
     
-    
-    override func viewDidLoad() {
-        Riffle.setFabric("ws://ubuntu@ec2-52-26-83-61.us-west-2.compute.amazonaws.com:8000/ws")
-        IHKeyboardAvoiding.setAvoidingView(viewLogin)
-    }
     
     override func viewWillAppear(animated: Bool) {
+        Riffle.setDevFabric()
+        Riffle.setDebug()
+        
+        IHKeyboardAvoiding.setAvoidingView(viewLogin)
+        
         textfieldUsername.layer.borderColor = UIColor.whiteColor().CGColor
         textfieldUsername.attributedPlaceholder = NSAttributedString(string: "Username", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
     }
@@ -42,7 +43,7 @@ class LandingViewController: UIViewController, RiffleDelegate {
     
     // MARK: Core Logic
     func play() {
-        app.call("pd.demo.cardsagainst/play", app.domain, handler: { (cards: [Card], players: [Player], state: String, roomName: String) in
+        container.call("play", me.domain, handler: { (cards: [Card], players: [Player], state: String, roomName: String) in
             let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("game") as! GameViewController
             
             // Temporary
@@ -73,7 +74,7 @@ class LandingViewController: UIViewController, RiffleDelegate {
     
     //MARK: Riffle Delegate
     func onJoin() {
-        print("Session connected")
+        print("App Agent connected")
         
         // Animations
         viewLogin.animation = "zoomOut"
@@ -92,8 +93,10 @@ class LandingViewController: UIViewController, RiffleDelegate {
         textfieldUsername.resignFirstResponder()
         let name = textfieldUsername.text!
         
-        app = RiffleAgent(domain: "xs.demo.damouse.exagainst")
+        app = RiffleAgent(domain: "xs.demo.damouse.cardsagainst")
         me = RiffleAgent(name: name, superdomain: app)
+        container = RiffleAgent(name: "container", superdomain: app)
+        
         me.delegate = self
         me.join()
     }

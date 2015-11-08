@@ -18,9 +18,9 @@ let EMPTY_TIME = 1.0
 let MIN_PLAYERS = 2
 
 
-let app = RiffleAgent(domain: "xs.demo.cardsagainst")
+let app = RiffleAgent(domain: "xs.demo.damouse.cardsagainst")
 Riffle.setDevFabric()
-
+Riffle.setDebug()
 
 class Container: RiffleAgent {
     var rooms: [Room] = []
@@ -31,7 +31,7 @@ class Container: RiffleAgent {
     override func onJoin() {
         print("Container joined")
         register("play", getRoom)
-        subscribe("sessionLeft", agentLeft)
+        app.subscribe("sessionLeft", agentLeft)
     }
     
     func getRoom(player: String) -> AnyObject {
@@ -50,11 +50,11 @@ class Container: RiffleAgent {
     }
     
     func agentLeft(domain: String) {
-        
+        print("Agent left: \(domain)")
     }
 }
 
 Container(name: "container", superdomain: app).join()
 NSRunLoop.currentRunLoop().run()
-
+print("done")
 
